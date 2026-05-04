@@ -23,7 +23,11 @@ jobs:
           extended: true
 
       - name: Build website
-        run: hugo --minify
+        shell: bash
+        run: |
+          OWNER_LOWER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          REPO_LOWER=$(echo "${{ github.event.repository.name }}" | tr '[:upper:]' '[:lower:]')
+          hugo --minify --baseURL "https://${OWNER_LOWER}.github.io/${REPO_LOWER}/"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
